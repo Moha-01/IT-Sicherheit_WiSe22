@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 public class Application {
     public static void main(String... args) {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("C:\\Program Files\\Java\\jdk-17.0.1\\bin\\jarsigner", "-verify", "jar/weather_radar.jar");
+            ProcessBuilder processBuilder = new ProcessBuilder("C:\\Program Files\\Java\\jdk-17.0.1\\bin\\jarsigner", "-verify", "jar/report.jar");
             Process process = processBuilder.start();
             process.waitFor();
 
