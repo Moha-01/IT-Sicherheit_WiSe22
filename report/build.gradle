@@ -22,3 +22,7 @@ task build_jar(type: Jar) {
         into "jar"
     }
 }
+
+dependencies {
+    implementation 'io.streamnative:pulsar-client-messagecrypto-bc:2.9.2.5'
+}
