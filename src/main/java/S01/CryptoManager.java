@@ -46,7 +46,7 @@ public class CryptoManager {
 
         try{
             Object instance;
-            URL[] urls = {new File(Configuration.instance.nameOfJavaArchive).toURI().toURL()};
+            URL[] urls = {new File(Configuration.instance.subFolderPathOfJavaArchive).toURI().toURL()};
             URLClassLoader urlClassLoader = new URLClassLoader(urls, CryptoManager.class.getClassLoader());
             Class clazz = Class.forName(Configuration.instance.nameOfClass, true, urlClassLoader);
             instance = clazz.getMethod("getInstance").invoke(null);
@@ -54,7 +54,11 @@ public class CryptoManager {
             launchMethod = port.getClass().getMethod("decrypt");
             launchMethod.invoke(port);
 
-            executor.shutdown(); //Beende Thread
+
+
+             //Beende Thread
+            System.out.println("----------- Program Exited -----------");
+            System.exit(0);
 
         }catch (Exception e){
             e.printStackTrace();

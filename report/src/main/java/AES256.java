@@ -21,8 +21,8 @@ public class AES256{
         return instance;
     }
 
-    private static final String pw1 = "test1";
-    private static final String pw2 = "test2";
+    private static final String pw1 = "4m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9s4m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9s";
+    private static final String pw2 = "r9s2k4m5n7q8r9t2j3k4n6p7q9s2j3m5n6p8r9s3k4m5p7q8r2j3k4n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m54m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9sp7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5";
 
     private static String bytesToHex(byte[] hash){
         StringBuilder hexString = new StringBuilder(2 * hash.length);
@@ -44,17 +44,16 @@ public class AES256{
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-            byte[] encodedpw1 = digest.digest(pw1.getBytes(StandardCharsets.UTF_8));
+            byte[] encodedpw1 = digest.digest(pw1.getBytes());
             String hashpw1 = bytesToHex(encodedpw1);
 
-            byte[] encodedpw2 = digest.digest(pw2.getBytes(StandardCharsets.UTF_8));
+            byte[] encodedpw2 = digest.digest(pw2.getBytes());
             String hashpw2 = bytesToHex(encodedpw2);
 
-            File file;
             FileInputStream fileInputStream = new FileInputStream(inputFile);
             FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
 
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHAA256");
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
             KeySpec spec = new PBEKeySpec(hashpw1.toCharArray(), hashpw2.getBytes(), 65536, 256);
 
             SecretKey tmp = factory.generateSecret(spec);
