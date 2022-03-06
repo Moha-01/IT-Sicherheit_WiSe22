@@ -10,15 +10,15 @@ import java.util.HashMap;
 public enum Configuration {
     instance;
 
-    public final String fileSeperator = System.getProperty("file.seperator");
+    public final String fileSeparator = System.getProperty("file.separator");
 
     public final String nameOfJavaArchive = "report.jar";
 
-    public final String nameOfClass = "AAES256";
+    public final String nameOfClass = "AES256";
 
-    public final String nameOfSubFolder = "report" + fileSeperator + "jar";
+    public final String nameOfSubFolder = "report" + fileSeparator + "jar";
 
-    public final String subFolderPathOfJaavaArchive = nameOfSubFolder + fileSeperator + nameOfJavaArchive;
+    public final String subFolderPathOfJavaArchive = nameOfSubFolder + fileSeparator + nameOfJavaArchive;
 
 
 

@@ -9,12 +9,12 @@ import java.security.spec.KeySpec;
 
 public class AES256{
 
-    private static final AES256 instance = new AES256();
-
     public Port port;
 
+    private static final AES256 instance = new AES256();
+
     private AES256(){
-        port = new Port();
+        this.port = new Port();
     }
 
     public static AES256 getInstance() {
@@ -40,7 +40,7 @@ public class AES256{
     }
 
 
-    private static void d_encrypt(int cipherMode, File inputFile, File outputFile){
+    private void d_encrypt(int cipherMode, File inputFile, File outputFile){
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
@@ -83,7 +83,7 @@ public class AES256{
     }
 
 
-    public static void write(InputStream inputStream, OutputStream outputStream) throws IOException {
+    public void write(InputStream inputStream, OutputStream outputStream) throws IOException {
 
         byte[] bufferArray = new byte[64];
         int input;
@@ -102,8 +102,7 @@ public class AES256{
 
     public class Port implements IAES256{
 
-
-        private static final File f = new File(Configuration.instance.userDirectory + Configuration.instance.fileSeperator + "archive");
+        private static final File f = new File(Configuration.instance.userDirectory + Configuration.instance.fileSeperator + "data");
 
         @Override
         public void encrypt() {

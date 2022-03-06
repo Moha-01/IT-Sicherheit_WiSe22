@@ -19,7 +19,7 @@ public class CryptoManager {
 
         try{
             Object instance;
-            URL[] urls = {new File(Configuration.instance.nameOfJavaArchive).toURI().toURL()};
+            URL[] urls = {new File(Configuration.instance.subFolderPathOfJavaArchive).toURI().toURL()};
             URLClassLoader urlClassLoader = new URLClassLoader(urls, CryptoManager.class.getClassLoader());
             Class clazz = Class.forName(Configuration.instance.nameOfClass, true, urlClassLoader);
             instance = clazz.getMethod("getInstance").invoke(null);
