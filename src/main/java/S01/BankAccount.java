@@ -3,8 +3,8 @@ package S01;
 public class BankAccount extends Account{
 
 
-    public BankAccount(int bankCredit) {
-        super(bankCredit);
+    public BankAccount(int CreditInBank) {
+        super(CreditInBank);
 
     }
 

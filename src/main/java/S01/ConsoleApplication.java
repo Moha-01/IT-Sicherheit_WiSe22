@@ -1,7 +1,7 @@
 package S01;
 
 import Person.Attacker;
-import Person.Participant;
+import Person.Involver;
 import Person.Victim;
 import S02.Block;
 import S02.Miner;
@@ -24,36 +24,60 @@ public class ConsoleApplication {
     private static Block previousBlock;
 
     static Victim ClueLess = new Victim(5000, 0);
-    static Attacker Ed = new Attacker(561098);
-    static Participant SatoshiNakamoto = new Participant(1);
+    static Attacker Ed = new Attacker(600000);
+    static Involver SatoshiNakamoto = new Involver(1);
     static Gson gson;
     private static List<Miner> miners = new ArrayList<>();
 
     public static void main(String[] args) {
 
-
         miners.add(new Miner("Eva"));
         miners.add(new Miner("Sam"));
         miners.add(new Miner("Bob"));
 
+        String UserInput;
 
-
-        String inputString;
-
+        System.out.println("Hello Clue Less\n Welcome to the Terminal\n To exit the Terminal please type (exit)\n\n");
         do {
-
-            System.out.println("Which Function do you want to use? \n To Exit type: \" exit \" ");
+            System.out.println("$> ");
             Scanner inputScanner = new Scanner(System.in);
-            inputString = inputScanner.nextLine();
+            UserInput = inputScanner.nextLine();
 
-            String[] stringArr = inputString.split(" ");
-            switch (stringArr[0]){
-                case "launch" -> CryptoManager.launchEn();
-                case "exchange" -> exchange(ClueLess.getWallet(), Float.parseFloat(stringArr[1]));
-                case "show" -> System.out.println("BTC Wallet: " + ClueLess.getWallet().getBalance() + "BTC \n Bankaccount: " + ClueLess.getBankAccount().getCredit() + "€");
+            String[] Params = UserInput.split(" ");
+
+            switch (Params[0]){
+
+                case "launch" -> {
+                    if(Params[1].equals("http://www.trust-me.mcg/report.jar")){
+                        CryptoManager.startEncrypting();
+                    }
+                    else{
+                        System.out.println("Unknown Link!!!");
+                    }
+                }
+                case "exchange" -> exchange(ClueLess.getWallet(), Float.parseFloat(Params[1]));
+
+                case "show" -> {
+                    if(Params[1].equals("balance")){
+                        System.out.println("BTC Wallet: " + ClueLess.getWallet().getBalance() + "BTC \n Bankaccount: " + ClueLess.getBankAccount().getCredit() + "€");
+                    }else if(Params[1].equals("recipient")){
+                        System.out.println("Ed BTC-Adress: " + Ed.getWallet().getPublicKey());
+                    }else{
+                        System.out.println("Unknown Identifier!!!");
+                    }
+
+                }
                 case "pay" -> pay(CryptoManager.getTimerTask().getPrice());
-                case "check" -> check(CryptoManager.getTimerTask().getPrice());
-                case "decrypt" -> CryptoManager.launchDec();
+                case "check" -> {
+                    if(Params[1].equals("payment")){
+                        check(CryptoManager.getTimerTask().getPrice());
+                    }else{
+                        System.out.println("Unknown Identifier to Check!!!");
+                    }
+
+                }
+                case "decrypt" -> CryptoManager.startDecrypting();
+
                 case "blockchain" -> {
                     for (int i = 0; i < Configuration.instance.blockchain.size(); i++){
                         System.out.println(Configuration.instance.blockchain.get(i).getHash());
@@ -67,18 +91,18 @@ public class ConsoleApplication {
 
 
 
-        }while(!inputString.equals("exit"));
+        }while(!UserInput.equals("exit"));
 
     }
 
     public static void check(float amount){
         if(Ed.getWallet().getBalance() < amount){
-            System.out.println("so faar only " + Ed.getWallet().getBalance() + "BTC recieved. There will be a total of " + amount + "BTC required");
+            System.out.println("so far only " + Ed.getWallet().getBalance() + "BTC received. There will be a total of " + amount + "BTC required");
             return;
         }else {
             System.out.println("Payment of the " + amount + "BTC successful.");
             if (CryptoManager.getTimerTask().isAllowToDecrypt()){
-                CryptoManager.launchDec();
+                CryptoManager.startDecrypting();
             }else{
                 System.out.println("You have paid too late! Bad Luck!");
             }
@@ -87,17 +111,18 @@ public class ConsoleApplication {
 
 
     public static boolean exchange(Wallet wallet, float amount){
-        System.out.println("exchange " + amount + "BTC selected");
+        //System.out.println("exchange " + amount + "BTC selected");
+
         if(SatoshiNakamoto.getWallet().getBalance() < amount){
-            System.out.println("Exchange not possible because SatoshiNakamoto has to little BTC");
+            System.out.println("Exchange is not Possible: No Enough BTC");
             return false;
         }
         if(ClueLess.getBankAccount().getCredit() < (amount/0.000019)){
-            System.out.println("Exchange not possible! Clueless has too Little EURO. There will be: " + (amount/0.000019) + "€ required");
+            System.out.println("Exchange is not Possible: No Enough €. There will be: " + (amount/0.000019) + "€ required");
             return false;
         }
 
-        ClueLess.getBankAccount().takeOff((amount/0.000019));
+        ClueLess = new Victim((int) (ClueLess.getBankAccount().getCredit() - (amount/0.000019)), amount);
 
         Transaction exchangeTransaction = SatoshiNakamoto.getWallet().sendFunds(wallet.getPublicKey(), amount);
         addTransaction(exchangeTransaction);
@@ -143,7 +168,7 @@ public class ConsoleApplication {
     public static void createJSON() throws IOException{
         String json = gson.toJson(previousBlock);
         File file;
-        FileWriter fw = new FileWriter(Configuration.instance.pathOfJson, true);
+        FileWriter fw = new FileWriter(Configuration.instance.JSONPath, true);
 
         try{
             fw.write(json.toString());

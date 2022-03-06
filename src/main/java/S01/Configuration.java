@@ -22,13 +22,14 @@ public enum Configuration {
 
 
 
+    public float AmountOfPay = 0.02755f;
     public final int difficulty = 3;
     public HashMap<String, TransactionOut> utx = new HashMap<>();
     public int transactionSequence = 0;
-    public float minimumTransaction = 0.01f;
-    public Transaction genesisTransaction;
     public ArrayList<Block> blockchain = new ArrayList<>();
-    public String pathOfJson = "BlockchainConsole.json";
-    public float payAmount = 0.02755f;
+    public String JSONPath = "BlockchainConsole.json";
+    public float minTransaction = 0.01f;
+    public Transaction genesisTransaction;
+
 
 }
