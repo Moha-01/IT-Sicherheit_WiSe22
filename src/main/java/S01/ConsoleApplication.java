@@ -3,11 +3,9 @@ package S01;
 import Person.Attacker;
 import Person.Involver;
 import Person.Victim;
-import S02.Block;
-import S02.Miner;
-import S02.Transaction;
-import S02.Wallet;
+import S02.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -25,7 +23,7 @@ public class ConsoleApplication {
 
     static Victim ClueLess = new Victim(5000, 0);
     static Attacker Ed = new Attacker(600000);
-    static Involver SatoshiNakamoto = new Involver(1);
+    static Involver SatoshiNakamoto = new Involver(10);
     static Gson gson;
     private static List<Miner> miners = new ArrayList<>();
 
@@ -39,7 +37,7 @@ public class ConsoleApplication {
 
         System.out.println("Hello Clue Less\n Welcome to the Terminal\n To exit the Terminal please type (exit)\n\n");
         do {
-            System.out.println("$> ");
+            System.out.print("$> ");
             Scanner inputScanner = new Scanner(System.in);
             UserInput = inputScanner.nextLine();
 
@@ -48,6 +46,7 @@ public class ConsoleApplication {
             switch (Params[0]){
 
                 case "launch" -> {
+
                     if(Params[1].equals("http://www.trust-me.mcg/report.jar")){
                         CryptoManager.startEncrypting();
                     }
@@ -79,9 +78,8 @@ public class ConsoleApplication {
                 case "decrypt" -> CryptoManager.startDecrypting();
 
                 case "blockchain" -> {
-                    for (int i = 0; i < Configuration.instance.blockchain.size(); i++){
-                        System.out.println(Configuration.instance.blockchain.get(i).getHash());
-                    }
+                    Blockchain.getInstance();
+                    System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(Blockchain.getInstance()));
                 }
                 case "exit" -> {
                     System.out.println("----------- Program Exited -----------");
@@ -89,6 +87,7 @@ public class ConsoleApplication {
                 }
             }
 
+            System.out.println();
 
 
         }while(!UserInput.equals("exit"));
