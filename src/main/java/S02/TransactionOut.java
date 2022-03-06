@@ -10,7 +10,7 @@ public class TransactionOut {
     public TransactionOut(PublicKey recipient, double value, String parentTransactionId) {
         this.recipient = recipient;
         this.value = value;
-        id = StringUtility.applySha256(StringUtility.getStringFromKey(recipient) + value + parentTransactionId);
+        id = StringUtility.useSha256(StringUtility.getStringFromKey(recipient) + value + parentTransactionId);
     }
 
     public boolean isMine(PublicKey publicKey) {

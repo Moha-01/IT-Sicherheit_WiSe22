@@ -7,14 +7,7 @@ import java.util.*;
 
 public class StringUtility {
 
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_RESET = "\u001B[0m";
-
-    public static String blueOutput(String s) {
-        return ANSI_BLUE + s + ANSI_RESET;
-    }
-
-    public static String applySha256(String input) {
+    public static String useSha256(String input) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
@@ -92,7 +85,7 @@ public class StringUtility {
             treeLayer = new ArrayList<>();
 
             for (int i = 1; i < previousTreeLayer.size(); i++) {
-                treeLayer.add(applySha256(previousTreeLayer.get(i - 1)) + previousTreeLayer.get(i));
+                treeLayer.add(useSha256(previousTreeLayer.get(i - 1)) + previousTreeLayer.get(i));
             }
 
             count = treeLayer.size();

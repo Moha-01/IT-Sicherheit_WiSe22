@@ -7,21 +7,18 @@ import java.nio.file.Path;
 import java.security.Security;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import static S02.StringUtility.blueOutput;
+
 
 public class Blockchain {
 
     private static Blockchain instance;
 
     private Transaction genesisTransaction;
-    private HashMap<String, TransactionOut> utx0Map = new HashMap<>();
+    private HashMap<String, TransactionOut> utxMap = new HashMap<>();
     private ArrayList<Block> blockchain = new ArrayList<>();
     private int transactionSequence = 0;
-
     private List<Miner> miners = new ArrayList<>();
-
     private Block previousBlock;
-
     public Wallet satoshiNakamoto;
 
     private Blockchain() {
@@ -44,20 +41,20 @@ public class Blockchain {
                         this.genesisTransaction.getValue(), this.genesisTransaction.getId())
         );
 
-        this.utx0Map.put(
+        this.utxMap.put(
                 this.genesisTransaction.getOutputs().get(0).getID(),
                 this.genesisTransaction.getOutputs().get(0)
         );
 
-        System.out.println(blueOutput("creating and mining genesis block"));
+        System.out.println("creating and mining genesis block");
         Block genesisBlock = new Block("0");
         genesisBlock.addTransaction(this.genesisTransaction);
         addBlock(genesisBlock);
 
         for (Miner m : miners) {
-            System.out.printf(blueOutput("%10s balance | %f%n"), m.getName(), m.getWallet().getBalance());
+            System.out.printf("%10s balance | %f%n", m.getName(), m.getWallet().getBalance());
         }
-        System.out.printf(blueOutput("%10s balance | %f%n"), "Satoshi", satoshiNakamoto.getBalance());
+        System.out.printf("%10s balance | %f%n", "Satoshi", satoshiNakamoto.getBalance());
 
 
 
@@ -99,17 +96,17 @@ public class Blockchain {
             previousBlock = this.blockchain.get(i - 1);
 
             if (!currentBlock.getHash().equals(currentBlock.calculateHash())) {
-                System.out.println(blueOutput("#current hashes not equal"));
+                System.out.println("#current hashes not equal");
                 return false;
             }
 
             if (!previousBlock.getHash().equals(currentBlock.getPreviousHash())) {
-                System.out.println(blueOutput("#trevious hashes not equal"));
+                System.out.println("#trevious hashes not equal");
                 return false;
             }
 
             if (!currentBlock.getHash().substring(0, Config.instance.difficultyLevel).equals(hashTarget)) {
-                System.out.println(blueOutput("#block not mined"));
+                System.out.println("#block not mined");
                 return false;
             }
 
@@ -118,12 +115,12 @@ public class Blockchain {
                 Transaction currentTransaction = currentBlock.getTransactions().get(t);
 
                 if (currentTransaction.verifySignature()) {
-                    System.out.println(blueOutput("#Signature on de.dhbw.blockchain.Transaction(" + t + ") is Invalid"));
+                    System.out.println("#Signature on de.dhbw.blockchain.Transaction(" + t + ") is Invalid");
                     return false;
                 }
 
                 if (currentTransaction.getInputsValue() != currentTransaction.getOutputsValue()) {
-                    System.out.println(blueOutput("#Inputs are not equal to oututs on de.dhbw.blockchain.Transaction(" + t + ")"));
+                    System.out.println("#Inputs are not equal to oututs on de.dhbw.blockchain.Transaction(" + t + ")");
                     return false;
                 }
 
@@ -131,12 +128,12 @@ public class Blockchain {
                     tempOutput = tempUTXOs.get(input.getId());
 
                     if (tempOutput == null) {
-                        System.out.println(blueOutput("#referenced input on transaction(" + t + ") is missing"));
+                        System.out.println("#referenced input on transaction(" + t + ") is missing");
                         return false;
                     }
 
                     if (input.getUTX0().getValue() != tempOutput.getValue()) {
-                        System.out.println(blueOutput("#referenced input on transaction(" + t + ") value invalid"));
+                        System.out.println("#referenced input on transaction(" + t + ") value invalid");
                         return false;
                     }
 
@@ -148,17 +145,17 @@ public class Blockchain {
                 }
 
                 if (currentTransaction.getOutputs().get(0).getRecipient() != currentTransaction.getRecipient()) {
-                    System.out.println(blueOutput("#transaction(" + t + ") output recipient is invalid"));
+                    System.out.println("#transaction(" + t + ") output recipient is invalid");
                     return false;
                 }
 
                 if (currentTransaction.getOutputs().get(1).getRecipient() != currentTransaction.getSender()) {
-                    System.out.println(blueOutput("#transaction(" + t + ") output 'change' is not sender"));
+                    System.out.println("#transaction(" + t + ") output 'change' is not sender");
                     return false;
                 }
             }
         }
-        System.out.println(blueOutput("blockchain valid"));
+        System.out.println("blockchain valid");
         return true;
     }
 
@@ -175,8 +172,8 @@ public class Blockchain {
         return transactionSequence;
     }
 
-    public HashMap<String, TransactionOut> getUtx0Map() {
-        return this.utx0Map;
+    public HashMap<String, TransactionOut> getUtxMap() {
+        return this.utxMap;
     }
 
     public boolean buyBtc(Wallet wallet, double amount) {

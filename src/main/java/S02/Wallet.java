@@ -4,8 +4,6 @@ import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.*;
 
-import static S02.StringUtility.blueOutput;
-
 public class Wallet {
     public HashMap<String, TransactionOut> utx0Map = new HashMap<>();
     private PrivateKey privateKey;
@@ -34,7 +32,7 @@ public class Wallet {
     public double getBalance() {
         double total = 0;
 
-        for (Map.Entry<String, TransactionOut> item : Blockchain.getInstance().getUtx0Map().entrySet()) {
+        for (Map.Entry<String, TransactionOut> item : Blockchain.getInstance().getUtxMap().entrySet()) {
             TransactionOut utx0 = item.getValue();
             if (utx0.isMine(publicKey)) {
                 utx0Map.put(utx0.getID(), utx0);
@@ -47,7 +45,7 @@ public class Wallet {
 
     public Transaction sendFunds(PublicKey recipient, double value) {
         if (getBalance() < value) {
-            System.out.println(blueOutput("#not enough funds to send transaction - transaction discarded"));
+            System.out.println("#not enough funds to send transaction - transaction discarded");
             return null;
         }
 

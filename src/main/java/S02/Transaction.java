@@ -2,7 +2,7 @@ package S02;
 
 import java.security.*;
 import java.util.ArrayList;
-import static S02.StringUtility.blueOutput;
+
 
 public class Transaction {
 
@@ -23,7 +23,7 @@ public class Transaction {
 
     private String calculateHash() {
         Blockchain.getInstance().incrementTransactionSequence();
-        return StringUtility.applySha256(StringUtility.getStringFromKey(sender) + StringUtility.getStringFromKey(recipient)
+        return StringUtility.useSha256(StringUtility.getStringFromKey(sender) + StringUtility.getStringFromKey(recipient)
                 + value + Blockchain.getInstance().getTransactionSequence());
     }
 
@@ -40,16 +40,16 @@ public class Transaction {
 
     public boolean processTransaction() {
         if (verifySignature()) {
-            System.out.println(blueOutput("#transaction signature failed to verify"));
+            System.out.println("#transaction signature failed to verify");
             return false;
         }
 
         for (TransactionIn i : inputs) {
-            i.setUtx0(Blockchain.getInstance().getUtx0Map().get(i.getId()));
+            i.setUtx0(Blockchain.getInstance().getUtxMap().get(i.getId()));
         }
 
         if (getInputsValue() <= 0) {
-            System.out.println(blueOutput("#transaction input to small | " + getInputsValue()));
+            System.out.println("#transaction input to small | " + getInputsValue());
             return false;
         }
 
@@ -59,14 +59,14 @@ public class Transaction {
         outputs.add(new TransactionOut(sender, leftOver, id));
 
         for (TransactionOut o : outputs) {
-            Blockchain.getInstance().getUtx0Map().put(o.getID(), o);
+            Blockchain.getInstance().getUtxMap().put(o.getID(), o);
         }
 
         for (TransactionIn i : inputs) {
             if (i.getUTX0() == null) {
                 continue;
             }
-            Blockchain.getInstance().getUtx0Map().remove(i.getUTX0().getID());
+            Blockchain.getInstance().getUtxMap().remove(i.getUTX0().getID());
         }
 
         return true;
@@ -122,4 +122,5 @@ public class Transaction {
     public ArrayList<TransactionOut> getOutputs() {
         return outputs;
     }
+
 }
