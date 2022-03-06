@@ -2,7 +2,7 @@ package S01;
 
 import java.util.Scanner;
 
-public class main {
+public class ConsoleApplication {
     public static void main(String[] args) {
 
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
