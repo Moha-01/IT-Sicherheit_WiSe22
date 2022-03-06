@@ -2,7 +2,10 @@ package S02;
 
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.security.Security;
 
 public class Wallet {
     public HashMap<String, TransactionOut> utx0Map = new HashMap<>();
@@ -15,6 +18,7 @@ public class Wallet {
 
     public void generateKeyPair() {
         try {
+            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("ECDSA", "BC");
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
             ECGenParameterSpec ecSpec = new ECGenParameterSpec("prime192v1");
