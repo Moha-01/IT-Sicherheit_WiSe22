@@ -1,0 +1,343 @@
+{
+  "genesisTransaction": {
+    "sender": {
+      "algorithm": "ECDSA",
+      "withCompression": false
+    },
+    "recipient": {
+      "algorithm": "ECDSA",
+      "withCompression": false
+    },
+    "value": 1.0,
+    "outputs": [
+      {
+        "id": "5a36f41135cf7b759b94d6a977bfeb3221ebc7d10bdb6cdfb6307da17415a59d",
+        "recipient": {
+          "algorithm": "ECDSA",
+          "withCompression": false
+        },
+        "value": 1.0
+      }
+    ],
+    "id": "0",
+    "signature": [
+      48,
+      53,
+      2,
+      25,
+      0,
+      -83,
+      18,
+      58,
+      72,
+      -89,
+      62,
+      61,
+      53,
+      -92,
+      -2,
+      -112,
+      -53,
+      -84,
+      -109,
+      -9,
+      -124,
+      100,
+      12,
+      47,
+      52,
+      52,
+      63,
+      -5,
+      -78,
+      2,
+      24,
+      76,
+      -127,
+      10,
+      -74,
+      50,
+      12,
+      -16,
+      -82,
+      57,
+      -97,
+      57,
+      20,
+      -64,
+      85,
+      2,
+      -34,
+      46,
+      120,
+      118,
+      111,
+      9,
+      -86,
+      117,
+      90
+    ]
+  },
+  "utx0Map": {
+    "3472926a205a307cc36a502063fbf29c2fbc04b6f1e8a8789d3c3d34c2cfb2fc": {
+      "id": "3472926a205a307cc36a502063fbf29c2fbc04b6f1e8a8789d3c3d34c2cfb2fc",
+      "recipient": {
+        "algorithm": "ECDSA",
+        "withCompression": false
+      },
+      "value": 0.025
+    },
+    "5a36f41135cf7b759b94d6a977bfeb3221ebc7d10bdb6cdfb6307da17415a59d": {
+      "id": "5a36f41135cf7b759b94d6a977bfeb3221ebc7d10bdb6cdfb6307da17415a59d",
+      "recipient": {
+        "algorithm": "ECDSA",
+        "withCompression": false
+      },
+      "value": 1.0
+    }
+  },
+  "blockchain": [
+    {
+      "previousHash": "0",
+      "timeStamp": 1646576184350,
+      "transactions": [
+        {
+          "sender": {
+            "algorithm": "ECDSA",
+            "withCompression": false
+          },
+          "recipient": {
+            "algorithm": "ECDSA",
+            "withCompression": false
+          },
+          "value": 1.0,
+          "outputs": [
+            {
+              "id": "5a36f41135cf7b759b94d6a977bfeb3221ebc7d10bdb6cdfb6307da17415a59d",
+              "recipient": {
+                "algorithm": "ECDSA",
+                "withCompression": false
+              },
+              "value": 1.0
+            }
+          ],
+          "id": "0",
+          "signature": [
+            48,
+            53,
+            2,
+            25,
+            0,
+            -83,
+            18,
+            58,
+            72,
+            -89,
+            62,
+            61,
+            53,
+            -92,
+            -2,
+            -112,
+            -53,
+            -84,
+            -109,
+            -9,
+            -124,
+            100,
+            12,
+            47,
+            52,
+            52,
+            63,
+            -5,
+            -78,
+            2,
+            24,
+            76,
+            -127,
+            10,
+            -74,
+            50,
+            12,
+            -16,
+            -82,
+            57,
+            -97,
+            57,
+            20,
+            -64,
+            85,
+            2,
+            -34,
+            46,
+            120,
+            118,
+            111,
+            9,
+            -86,
+            117,
+            90
+          ]
+        }
+      ],
+      "miner": {
+        "algorithm": "ECDSA",
+        "withCompression": false
+      },
+      "minerReward": 0.025,
+      "merkleRoot": "0",
+      "hash": "00049e2e8d509041f627309215c116ec13e6500ff761d165e73d7be6ad10800d",
+      "nonce": 6898
+    }
+  ],
+  "transactionSequence": 0,
+  "miners": [
+    {
+      "wallet": {
+        "utx0Map": {},
+        "privateKey": {
+          "algorithm": "ECDSA",
+          "withCompression": false
+        },
+        "publicKey": {
+          "algorithm": "ECDSA",
+          "withCompression": false
+        }
+      },
+      "name": "Bob"
+    },
+    {
+      "wallet": {
+        "utx0Map": {},
+        "privateKey": {
+          "algorithm": "ECDSA",
+          "withCompression": false
+        },
+        "publicKey": {
+          "algorithm": "ECDSA",
+          "withCompression": false
+        }
+      },
+      "name": "Eve"
+    },
+    {
+      "wallet": {
+        "utx0Map": {},
+        "privateKey": {
+          "algorithm": "ECDSA",
+          "withCompression": false
+        },
+        "publicKey": {
+          "algorithm": "ECDSA",
+          "withCompression": false
+        }
+      },
+      "name": "Sam"
+    }
+  ],
+  "previousBlock": {
+    "previousHash": "0",
+    "timeStamp": 1646576184350,
+    "transactions": [
+      {
+        "sender": {
+          "algorithm": "ECDSA",
+          "withCompression": false
+        },
+        "recipient": {
+          "algorithm": "ECDSA",
+          "withCompression": false
+        },
+        "value": 1.0,
+        "outputs": [
+          {
+            "id": "5a36f41135cf7b759b94d6a977bfeb3221ebc7d10bdb6cdfb6307da17415a59d",
+            "recipient": {
+              "algorithm": "ECDSA",
+              "withCompression": false
+            },
+            "value": 1.0
+          }
+        ],
+        "id": "0",
+        "signature": [
+          48,
+          53,
+          2,
+          25,
+          0,
+          -83,
+          18,
+          58,
+          72,
+          -89,
+          62,
+          61,
+          53,
+          -92,
+          -2,
+          -112,
+          -53,
+          -84,
+          -109,
+          -9,
+          -124,
+          100,
+          12,
+          47,
+          52,
+          52,
+          63,
+          -5,
+          -78,
+          2,
+          24,
+          76,
+          -127,
+          10,
+          -74,
+          50,
+          12,
+          -16,
+          -82,
+          57,
+          -97,
+          57,
+          20,
+          -64,
+          85,
+          2,
+          -34,
+          46,
+          120,
+          118,
+          111,
+          9,
+          -86,
+          117,
+          90
+        ]
+      }
+    ],
+    "miner": {
+      "algorithm": "ECDSA",
+      "withCompression": false
+    },
+    "minerReward": 0.025,
+    "merkleRoot": "0",
+    "hash": "00049e2e8d509041f627309215c116ec13e6500ff761d165e73d7be6ad10800d",
+    "nonce": 6898
+  },
+  "satoshiNakamoto": {
+    "utx0Map": {},
+    "privateKey": {
+      "algorithm": "ECDSA",
+      "withCompression": false
+    },
+    "publicKey": {
+      "algorithm": "ECDSA",
+      "withCompression": false
+    }
+  }
+}
